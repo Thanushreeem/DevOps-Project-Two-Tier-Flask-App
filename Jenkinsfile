@@ -1,23 +1,33 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('Clone repo'){
-            steps{
-                git branch: 'main', url: 'https://github.com/prashantgohel321/DevOps-Project-Two-Tier-Flask-App.git'
+
+    stages {
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t flask-app .'
             }
         }
-        stage('Build image'){
-            steps{
-                sh 'docker build -t flask-app .'
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                bat 'docker compose down'
+                bat 'docker compose up -d --build'
             }
         }
-        stage('Deploy with docker compose'){
-            steps{
-                // existing container if they are running
-                sh 'docker compose down || true'
-                // start app, rebuilding flask image
-                sh 'docker compose up -d --build'
-            }
+    }
+
+    post {
+        success {
+            echo 'Application deployed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check the Console Output for details.'
+        }
+
+        always {
+            echo 'Jenkins pipeline execution completed.'
         }
     }
 }
