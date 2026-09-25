@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+
   mysql:
     container_name: mysql
     image: mysql
@@ -38,10 +39,10 @@ services:
       - "5000:5000"
 
     environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
-      - MYSQL_DB=devops
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: devops
 
     networks:
       - two-tier-nt
